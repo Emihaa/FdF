@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:45:03 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/13 22:08:11 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:31:39 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void draw_line_ver(mlx_image_t *img, window_t *screen)
 			while (index <= step)
 			{
 				if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT)
-					mlx_put_pixel(img, x, y, 0xFFFFFFFF);
+					mlx_put_pixel(img, x, y, DEFAULT_COLOR);
 				x += destx;
 				y += desty;
 				index += 1;
@@ -96,12 +96,12 @@ static void draw_line_hor(mlx_image_t *img, window_t *screen)
 
 			x = screen->vertex[i][j].x;
 			y = screen->vertex[i][j].y;
-			
+
 			index = 0;
 			while (index <= step)
 			{
 				if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT)
-					mlx_put_pixel(img, x, y, 0xFFFFFFFF);
+					mlx_put_pixel(img, x, y, DEFAULT_COLOR);
 				x += destx;
 				y += desty;
 				index += 1;

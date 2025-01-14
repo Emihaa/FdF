@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:47:55 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/13 22:15:52 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:29:33 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	error_exit(char *s)
 
 static void hex_convert(char *str, window_t *screen, int i, int j)
 {
-	char *hex;
 	int pos;
 	unsigned int dec;
 	int len;
@@ -30,24 +29,21 @@ static void hex_convert(char *str, window_t *screen, int i, int j)
 	dec = 0;
 	pos = 0;
 	val = 0;
-	//check if the lenght is correct and give error if wrong
-	hex = ft_strjoin(ft_strchr(str, 'x') + 1, "FF");
-	len = ft_strlen(hex) - 1;
-	if (len != 7)
-		error_exit("wrong color hex");
+	len = ft_strlen(str) - 1;
 	while (pos <= len)
 	{	
-		if (hex[pos] >= '0' && hex[pos] <= '9')
-			val = val * hex[pos] - '0';
-		else if (hex[pos] >= 'a' && hex[pos] <= 'f')
-			val = hex[pos] - 'a' + 10;
-		else if (hex[pos] >= 'A' && hex[pos]<= 'F')
-			val = hex[pos] - 'A' + 10;
+		if (str[pos] >= '0' && str[pos] <= '9')
+			val = str[pos] - '0';
+		else if (str[pos] >= 'a' && str[pos] <= 'f')
+			val = str[pos] - 'a' + 10;
+		else if (str[pos] >= 'A' && str[pos]<= 'F')
+			val = str[pos] - 'A' + 10;
+		else
+			error_exit("Invalid hex char");
 		dec = dec * 16 + val;
 		pos++;
 	}
-	screen->vertex[i][j].color = dec;
-	free(hex);
+	screen->vertex[i][j].color = (int32_t) dec;
 	// ft_printf("color %s\n", hex);
 	// ft_printf("color %u\n", dec);
 	// ft_printf("color %x\n", dec);
@@ -57,11 +53,15 @@ static void map_z_info(int fd, char *map_data, window_t *screen)
 {
 	char *line;
 	char **rows;
+	char *temp;
+	int len;
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
+	len = 0;
+	temp = NULL;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -69,9 +69,21 @@ static void map_z_info(int fd, char *map_data, window_t *screen)
 		j = 0;
 		while (rows[j])
 		{
+			//ft_printf("column [%d] rows[%d]: '%s'\n", i, j, rows[j]);
 			screen->vertex[i][j].z = ft_atoi(rows[j]);	
+			screen->vertex[i][j].color = 0;
 			if (ft_strchr(rows[j], 'x') != NULL)
-				hex_convert(rows[j], screen, i, j);
+			{
+				if (ft_strchr(rows[j], '\n') != NULL)
+				{
+					len = ft_strlen(rows[j]);
+					temp = ft_substr(rows[j], 0, len-1);
+					hex_convert(ft_strchr(temp, 'x')+ 1, screen, i, j);
+					free(temp);
+				}	
+				else
+					hex_convert(ft_strchr(rows[j], 'x')+ 1, screen, i, j);
+			}
 			free(rows[j]);
 			j++;
 		}
@@ -189,7 +201,7 @@ void	open_map(int argc, char *argv[], window_t *screen)
 	if (!fd)
 	{
 		free(path);
-		error_exit("Failed to open the file");
+		error_exit("Failed to open the file"); //check as well if file is .fdf format
 	}
 	map_w_h_info(fd, screen, &map_data); //get w & h info and check map parse
 	allocate_points(screen); //allocate memory for points
