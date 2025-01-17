@@ -7,7 +7,7 @@ NAME = fdf
 
 HEADERS = -I $(LIBMLX)/include
 LIBS = $(LIBMLX)/build/libmlx42.a $(LIBFT)/libft.a -ldl -lglfw -pthread -lm 
-SRC = rsc/fdf.c rsc/map_control-v2.c
+SRC = rsc/fdf.c rsc/map_control.c rsc/color_utils.c
 
 OBJS = $(SRC:.c=.o)
 
