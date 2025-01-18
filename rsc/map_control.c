@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:47:55 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/17 16:10:12 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/18 22:11:00 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	error_exit(char *s)
 	exit(EXIT_FAILURE);
 }
 
-static void hex_convert(char *str, window_t *screen, int i, int j)
+static void hex_convert(char *str, window_t *window, int i, int j)
 {
 	int pos;
 	unsigned int dec;
@@ -43,28 +43,28 @@ static void hex_convert(char *str, window_t *screen, int i, int j)
 		dec = dec * 16 + val;
 		pos++;
 	}
-	screen->vertex[i][j].hex_color = get_rgba(get_r(dec), get_g(dec), get_b(dec), 255);
+	window->points[i][j].hex_color = get_rgba(get_r(dec), get_g(dec), get_b(dec), 255);
 }
 
-uint32_t base_colors(window_t *screen, int i, int j)
+uint32_t base_colors(window_t *window, int i, int j)
 {
 	uint32_t color = DEFAULT_COLOR;
-	int max_top = screen->max_z + 1;
-	int max_bot = screen->min_z - 1;
+	int max_top = window->max_z + 1;
+	int max_bot = window->min_z - 1;
 	
-	if (screen->vertex[i][j].z > 0)
+	if (window->points[i][j].z > 0)
 	{
-		color = get_gradient(DEFAULT_COLOR, DEFAULT_TOP, max_top, screen->vertex[i][j].z - max_top);
+		color = get_gradient(DEFAULT_COLOR, DEFAULT_TOP, max_top, window->points[i][j].z - max_top);
 	}
-	else if (screen->vertex[i][j].z < 0)
+	else if (window->points[i][j].z < 0)
 	{
-		color = get_gradient(DEFAULT_COLOR, DEFAULT_BOTTOM, max_bot, screen->vertex[i][j].z - max_bot);
+		color = get_gradient(DEFAULT_COLOR, DEFAULT_BOTTOM, max_bot, window->points[i][j].z - max_bot);
 	}
 	return (color);
 }
 
 
-static void map_z_info(int fd, char *map_data, window_t *screen)
+static void map_z_info(int fd, char *map_data, window_t *window)
 {
 	char *line;
 	char **rows;
@@ -78,34 +78,36 @@ static void map_z_info(int fd, char *map_data, window_t *screen)
 	len = 0;
 	temp = NULL;
 	line = get_next_line(fd);
-	screen->max_z = 1;
-	screen->min_z = -1;
+	window->max_z = 1;
+	window->min_z = -1;
+	window->scale.scale_z = 1;
+	window->scale.scale_xy = 0;
 	while (line)
 	{
 		rows = ft_split(line, ' ');
 		j = 0;
 		while (rows[j])
 		{
-			screen->vertex[i][j].z = ft_atoi(rows[j]);
-			if (screen->vertex[i][j].z > 1 && screen->max_z < screen->vertex[i][j].z)
-				screen->max_z = screen->vertex[i][j].z;
-			else if (screen->vertex[i][j].z < -1 && screen->min_z > screen->vertex[i][j].z)
-				screen->min_z = screen->vertex[i][j].z;
-			screen->vertex[i][j].hex_color = DEFAULT_COLOR;
+			window->points[i][j].z = ft_atoi(rows[j]);
+			if (window->points[i][j].z > 1 && window->max_z < window->points[i][j].z)
+				window->max_z = window->points[i][j].z;
+			else if (window->points[i][j].z < -1 && window->min_z > window->points[i][j].z)
+				window->min_z = window->points[i][j].z;
+			window->points[i][j].hex_color = DEFAULT_COLOR;
 			if (ft_strchr(rows[j], 'x') != NULL)
 			{
 				if (ft_strchr(rows[j], '\n') != NULL)
 				{
 					len = ft_strlen(rows[j]);
 					temp = ft_substr(rows[j], 0, len-1);
-					hex_convert(ft_strchr(temp, 'x')+ 1, screen, i, j);
+					hex_convert(ft_strchr(temp, 'x')+ 1, window, i, j);
 					free(temp);
 				}	
 				else
-					hex_convert(ft_strchr(rows[j], 'x')+ 1, screen, i, j);
+					hex_convert(ft_strchr(rows[j], 'x')+ 1, window, i, j);
 			}
 			else
-				screen->vertex[i][j].hex_color = base_colors(screen, i, j);
+				window->points[i][j].hex_color = base_colors(window, i, j);
 			free(rows[j]);
 			j++;
 		}
@@ -119,31 +121,31 @@ static void map_z_info(int fd, char *map_data, window_t *screen)
 	//ft_printf("map:\n%s\n", map_data);
 }
 
-static void allocate_points(window_t *screen)
+static void allocate_points(window_t *window)
 {
 	int i = 0;
 	
-	screen->vertex = malloc(screen->row_h * sizeof(point_t *));
-	if (!screen->vertex)
+	window->points = malloc(window->row_h * sizeof(point_t *));
+	if (!window->points)
 		error_exit("failed to allocate points");
-	while (i < (int) screen->row_h)
+	while (i < (int) window->row_h)
 	{
-		screen->vertex[i] = malloc(screen->row_w * sizeof(point_t));
-		if (!screen->vertex[i])
+		window->points[i] = malloc(window->row_w * sizeof(point_t));
+		if (!window->points[i])
 		{
 			while (i >= 0)
 			{
-				free(screen->vertex[i]);
+				free(window->points[i]);
 				i--;
 			}
-			free(screen->vertex);
+			free(window->points);
 			error_exit("failed to allocate points");
 		}
 		i++;
 	}
 }
 
-static void parse_map(char *line, window_t *screen)
+static void parse_map(char *line, window_t *window)
 {
 	char **rows;
 	int i;
@@ -157,12 +159,12 @@ static void parse_map(char *line, window_t *screen)
 		free(rows[i]);
 		i++;
 	}
-	if (i != (int)screen->row_check)
+	if (i != (int)window->row_check)
 		error_exit("Map incorrect");
 	free(rows);
 }
 
-static void	map_w_h_info(int fd, window_t *screen, char **map_data)
+static void	map_w_h_info(int fd, window_t *window, char **map_data)
 {	
     char *line;
     char **rows;
@@ -178,17 +180,17 @@ static void	map_w_h_info(int fd, window_t *screen, char **map_data)
     rows = ft_split(line, ' ');
 	if (!rows)
 		error_exit("Failed to read the row");
-    while (rows[screen->row_w])
+    while (rows[window->row_w])
     {
-        free(rows[screen->row_w]);
-        screen->row_w++;
+        free(rows[window->row_w]);
+        window->row_w++;
     }
-	screen->row_check = screen->row_w;
+	window->row_check = window->row_w;
     while (line)
     {
-		parse_map(line, screen);
+		parse_map(line, window);
         free(line);
-        screen->row_h++;
+        window->row_h++;
         line = get_next_line(fd);
 		if (!line)
 			break;
@@ -205,7 +207,7 @@ static void	map_w_h_info(int fd, window_t *screen, char **map_data)
     free(rows);
 }
 
-void	open_map(int argc, char *argv[], window_t *screen)
+void	open_map(int argc, char *argv[], window_t *window)
 {
 	int		fd;
 	char	*path;
@@ -213,10 +215,11 @@ void	open_map(int argc, char *argv[], window_t *screen)
 
 	map_data = NULL;
 	path = NULL;
-	screen->row_h = 0;
-	screen->row_w = 0;
-	screen->row_check = 0;
-	screen->z_mult = 0;
+	window->row_h = 0;
+	window->row_w = 0;
+	window->row_check = 0;
+	window->move.x = 0;
+	window->move.y = 0;
 	if (argc < 2 || !argv[1] || argc > 2)
 		error_exit("Invalid arguments");
 	path = ft_strjoin("./maps/", argv[1]);
@@ -228,8 +231,8 @@ void	open_map(int argc, char *argv[], window_t *screen)
 		free(path);
 		error_exit("Failed to open the file"); //check as well if file is .fdf format
 	}
-	map_w_h_info(fd, screen, &map_data); //get w & h info and check map parse
-	allocate_points(screen); //allocate memory for points
+	map_w_h_info(fd, window, &map_data); //get w & h info and check map parse
+	allocate_points(window); //allocate memory for points
 	close(fd);
 	fd = open(path, O_RDONLY);
 	if (!fd)
@@ -237,7 +240,7 @@ void	open_map(int argc, char *argv[], window_t *screen)
 		free(path);
 		error_exit("Failed to open the file");
 	}
-	map_z_info(fd, map_data, screen); //get z info from map AND put it to allocated memory
+	map_z_info(fd, map_data, window); //get z info from map AND put it to allocated memory
 	free(map_data);
 	free(path);
 	close(fd);
