@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:59:24 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/18 22:55:29 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:57:36 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,27 +144,27 @@ static float compute_z_center(window_t *window)
 	return (z_sum / (window->row_h * window->row_w));
 }
 
-void rotate(window_t *window, double theta)
+void rotate(window_t *window)
 {
 	int i = 0;
 	int j = 0;
-	double cos_theta = cos (theta);
-	double sin_theta = sin (theta);
+	double temp_x = 0;
+	double temp_z = 0;
+	int q = 120;
 	
 	while (i < (int)window->row_h)
 	{
-		while (j < (int)window->row_h)
+		while (j < (int)window->row_w)
 		{
-			double x = window->points[i][j].x;
-			double y = window->points[i][j].y;
-			
-			window->points[i][j].x = x * cos_theta - y * sin_theta;
-			window->points[i][j].y = x * sin_theta + y * cos_theta;
+			temp_x = window->points[i][j].x;
+			temp_z = window->points[i][j].z;
+			window->points[i][j].x = temp_x * cos(q) + temp_z * sin(q);
+			window->points[i][j].z = temp_z * sin(q) - temp_x * cos(q);
 			j++;
 		}
 		i++;
+		j = 0;
 	}
-	redraw_image(window);
 }
 
 void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window)
@@ -174,7 +174,6 @@ void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window)
 	int x = 0;
 	int y = 0;
 	float z = 0;
-	int angle = 120;
 	int space = 0;
 	float z_center = 0;
     
@@ -188,10 +187,25 @@ void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window)
 		while (j < (int) window->row_w)
 		{
 			z = (window->points[i][j].z - z_center) * window->scale.scale_z + z_center;
-			window->points[i][j].x = (int)(x * cos(angle)) + (y * cos(angle + 2)) + (z * cos(angle - 2));
+			// if (window->rotate.flag == 1)
+			// {
+			// 	float temp_x = x;
+			// 	float temp_z = z;
+			// 	float q = PI / 4 + window->rotate.rotate_x;
+			// 	x = temp_x * cos(q) + temp_z * sin(q);
+			// 	z = temp_z * sin(q) - temp_x * cos(q);
+			// }
+			// window->points[i][j].x = x;
+			//window->points[i][j].x = (int)(x * cos(angle)) + (y * cos(angle + 2)) + (z * cos(angle - 2));
+			// x += window->row_w/2;
+			// y += window->row_h/2;
+			window->points[i][j].x = (x - y) * cos(window->rotate.rotate_x);
 			window->points[i][j].x *= 0.7 + window->scale.scale_xy;
 			window->points[i][j].x += (WINDOW_WIDTH) - (1000) + window->move.x;
-			window->points[i][j].y = (int)(x * sin(angle)) + (y * sin(angle + 2)) + (z * sin(angle - 2));
+			// window->points[i][j].y  = y;
+			window->points[i][j].y = (x + y) * sin(window->rotate.rotate_y) - z;
+			//window->points[i][j].y = (int)(x * sin(angle)) + (y * sin(angle + 2)) + (z * sin(angle - 2));
+			// window->points[i][j].y = y;
 			window->points[i][j].y *= 0.7 + window->scale.scale_xy;
 			window->points[i][j].y += (WINDOW_HEIGHT) - (1000) + 100 + window->move.y;
 			//call here the base color?

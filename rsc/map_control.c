@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:47:55 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/18 22:11:00 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:58:09 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static void map_z_info(int fd, char *map_data, window_t *window)
 	window->min_z = -1;
 	window->scale.scale_z = 1;
 	window->scale.scale_xy = 0;
+	window->rotate.rotate_x = 0.5;
+	window->rotate.rotate_y = 0.5;
 	while (line)
 	{
 		rows = ft_split(line, ' ');

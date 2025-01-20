@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:51:07 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/18 22:54:31 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:45:04 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define DEFAULT_COLOR 0xFFFFFFFF
 # define DEFAULT_TOP 0xFF0000FF
 # define DEFAULT_BOTTOM 0x0000FFFF
-# define M_PI 3.14159265358979323846
+# define PI 3.14159265358979323846
 
 typedef struct s_point
 {
@@ -57,6 +57,7 @@ typedef struct s_rotate
     float rotate_z;
 } rotate_t;
 
+
 //window structure
 typedef struct s_window
 {
@@ -74,7 +75,7 @@ typedef struct s_window
 }   window_t;
 
 //map_control.c
-void open_map(int argc, char *argv[], window_t *screen);
+void open_map(int argc, char *argv[], window_t *window);
 uint32_t base_colors(window_t *window, int i, int j);
 
 //color_utils.c
@@ -88,10 +89,10 @@ uint8_t	get_g_invert(uint32_t rgba);
 uint8_t	get_b_invert(uint32_t rgba);
 
 //draw.c
-void display_points(mlx_image_t *img, mlx_t* mlx, window_t *screen);
+void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window);
 uint32_t get_gradient(uint32_t color_s, uint32_t color_d, int len, int point);
-void redraw_image(window_t *screen);
-void rotate(window_t *window, double theta);
+void redraw_image(window_t *window);
+void rotate(window_t *window);
 
 //fdf.c
 void ft_error(void);
@@ -99,7 +100,8 @@ void ft_error(void);
 //keyhooks.c
 void keyhook_events(mlx_key_data_t keydata, void* param);
 void keyhook_z_depth(mlx_key_data_t keydata, void* param);
-
+void keyhook_scale(mlx_key_data_t keydata, void* param);
+void key_down(void* param);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:45:03 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/18 22:10:31 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:44:42 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void image_parameters(mlx_image_t *img, window_t *window)
 	}
 	free(window->points);
  }
+
  
 int32_t	main(int argc, char *argv[]) //args given on input
 {	
@@ -51,6 +52,7 @@ int32_t	main(int argc, char *argv[]) //args given on input
 	
 	//esc key press and free everything
 	mlx_key_hook(window.mlx, &keyhook_events, &window);
+	mlx_loop_hook(window.mlx, key_down, &window);
 	mlx_loop(window.mlx);
 	mlx_terminate(window.mlx);
 	free_everything(&window);
