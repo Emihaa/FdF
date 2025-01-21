@@ -16,9 +16,9 @@ all: $(LIBMLX)/build/libmlx42.a $(LIBFT)/libft.a $(NAME)
 $(LIBMLX):
 	@git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX)
 
-$(LIBMLX)/build/libmlx42.a:	 
+$(LIBMLX)/build/libmlx42.a: $(LIBMLX)
 	@cmake $(LIBMLX) -B $(LIBMLX)/build
-	@make -C $(LIBMLX)/build -j4 $@
+	@make -C $(LIBMLX)/build -j4
 
 $(LIBFT)/libft.a:
 	@make -C $(LIBFT)
