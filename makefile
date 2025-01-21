@@ -13,6 +13,9 @@ OBJS = $(SRC:.c=.o)
 
 all: $(LIBMLX)/build/libmlx42.a $(LIBFT)/libft.a $(NAME)
 
+$(LIBMLX):
+	@git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX)
+
 $(LIBMLX)/build/libmlx42.a:	 
 	@cmake $(LIBMLX) -B $(LIBMLX)/build
 	@make -C $(LIBMLX)/build -j4 $@
@@ -29,9 +32,6 @@ $(NAME): $(OBJS)
 clean:
 	@rm -f $(OBJS)
 	@make -C $(LIBFT) clean
-#	@rm -rf $(LIBMLX)/build
-#probleema on nyt etta oletus on ettta ./MLX42/build/libmlx42.a on koko ajan olemassa
-#taytyy miettia etta pitaako mun tahan lisata etta kun teen make ni se luo sen jos sita ei oo olemassa
 
 fclean: clean
 	@rm -f $(NAME)

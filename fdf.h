@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:51:07 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/20 22:45:04 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:46:33 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # define DEFAULT_COLOR 0xFFFFFFFF
 # define DEFAULT_TOP 0xFF0000FF
 # define DEFAULT_BOTTOM 0x0000FFFF
-# define PI 3.14159265358979323846
 
 typedef struct s_point
 {
@@ -54,7 +53,6 @@ typedef struct s_rotate
 {
     float rotate_x;
     float rotate_y;
-    float rotate_z;
 } rotate_t;
 
 
@@ -99,8 +97,6 @@ void ft_error(void);
 
 //keyhooks.c
 void keyhook_events(mlx_key_data_t keydata, void* param);
-void keyhook_z_depth(mlx_key_data_t keydata, void* param);
-void keyhook_scale(mlx_key_data_t keydata, void* param);
 void key_down(void* param);
 
 

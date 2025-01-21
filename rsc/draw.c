@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:59:24 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/20 22:57:36 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:46:22 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,25 +187,10 @@ void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window)
 		while (j < (int) window->row_w)
 		{
 			z = (window->points[i][j].z - z_center) * window->scale.scale_z + z_center;
-			// if (window->rotate.flag == 1)
-			// {
-			// 	float temp_x = x;
-			// 	float temp_z = z;
-			// 	float q = PI / 4 + window->rotate.rotate_x;
-			// 	x = temp_x * cos(q) + temp_z * sin(q);
-			// 	z = temp_z * sin(q) - temp_x * cos(q);
-			// }
-			// window->points[i][j].x = x;
-			//window->points[i][j].x = (int)(x * cos(angle)) + (y * cos(angle + 2)) + (z * cos(angle - 2));
-			// x += window->row_w/2;
-			// y += window->row_h/2;
 			window->points[i][j].x = (x - y) * cos(window->rotate.rotate_x);
 			window->points[i][j].x *= 0.7 + window->scale.scale_xy;
 			window->points[i][j].x += (WINDOW_WIDTH) - (1000) + window->move.x;
-			// window->points[i][j].y  = y;
 			window->points[i][j].y = (x + y) * sin(window->rotate.rotate_y) - z;
-			//window->points[i][j].y = (int)(x * sin(angle)) + (y * sin(angle + 2)) + (z * sin(angle - 2));
-			// window->points[i][j].y = y;
 			window->points[i][j].y *= 0.7 + window->scale.scale_xy;
 			window->points[i][j].y += (WINDOW_HEIGHT) - (1000) + 100 + window->move.y;
 			//call here the base color?
