@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:51:07 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/21 16:46:33 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/22 20:33:39 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ typedef struct s_point
     int32_t color;
     
 } point_t;
+
+typedef struct s_og_point
+{
+    int x_og;
+    int y_og;
+    int z_og;
+} og_point_t;
 
 typedef struct s_translate
 {
@@ -70,11 +77,20 @@ typedef struct s_window
     translate_t move;
     rotate_t rotate;
     point_t **points;
+    og_point_t **og_points;
 }   window_t;
 
 //map_control.c
-void open_map(int argc, char *argv[], window_t *window);
-uint32_t base_colors(window_t *window, int i, int j);
+void initiliaze_map(int argc, char *argv[], window_t *window);
+void null_check(char **source);
+void parse_map(char *line, window_t *window);
+
+//map_tasks.c
+void	map_w_h_info(int fd, window_t *window, char **map_data);
+void store_map(window_t *window, char **line, int *fd, char **map_data);
+void allocate_points(window_t *window);
+void map_z_info(int fd, char *map_data, window_t *window);
+void input_z_data(window_t *window, int *j, int *i, char **rows);
 
 //color_utils.c
 uint8_t get_a(uint32_t rgba);
@@ -86,18 +102,28 @@ uint8_t	get_r_invert(uint32_t rgba);
 uint8_t	get_g_invert(uint32_t rgba);
 uint8_t	get_b_invert(uint32_t rgba);
 
+//colors.c
+void hex_convert(char *str, window_t *window, int i, int j);
+uint32_t base_colors(window_t *window, int i, int j);
+
 //draw.c
 void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window);
 uint32_t get_gradient(uint32_t color_s, uint32_t color_d, int len, int point);
-void redraw_image(window_t *window);
 void rotate(window_t *window);
+
+
+//draw_line.c
+void draw_line_hor(mlx_image_t *img, window_t *window);
 
 //fdf.c
 void ft_error(void);
+void redraw_image(window_t *window);
 
 //keyhooks.c
 void keyhook_events(mlx_key_data_t keydata, void* param);
 void key_down(void* param);
 
+//initialize.c
+void initiliaze(window_t *window);
 
 #endif

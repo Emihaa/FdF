@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color_utils.c                                      :+:      :+:    :+:   */
+/*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 17:04:00 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 16:56:39 by ehaanpaa         ###   ########.fr       */
+/*   Created: 2025/01/22 16:43:59 by ehaanpaa          #+#    #+#             */
+/*   Updated: 2025/01/22 20:31:30 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-uint8_t	get_r(uint32_t rgba)
+void	initiliaze(window_t *window)
 {
-	return ((rgba >> 16) & 0xFF);
-}
-
-uint8_t	get_g(uint32_t rgba)
-{
-	return ((rgba >> 8) & 0xFF);
-}
-
-uint8_t	get_b(uint32_t rgba)
-{
-	return (rgba & 0xFF);
-}
-
-uint8_t	get_a(uint32_t rgba)
-{
-	return ((rgba >> 24) & 0xFF);
-}
-
-uint32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	return ((uint32_t)r << 24 | (uint32_t)g << 16 | (uint32_t)b << 8 | a);
+	window->row_h = 0;
+	window->row_w = 0;
+	window->row_check = 0;
+	window->move.x = 0;
+	window->move.y = 0;
+	window->max_z = 1;
+	window->min_z = -1;
+	window->scale.scale_z = 1;
+	window->scale.scale_xy = 0;
+	window->rotate.rotate_x = 0.5;
+	window->rotate.rotate_y = 0.5;
+    
 }
