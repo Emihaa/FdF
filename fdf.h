@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:51:07 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 20:33:39 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:46:00 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,15 @@ typedef struct s_rotate
     float rotate_y;
 } rotate_t;
 
+typedef struct s_draw_line
+{
+    int index;
+    float len;
+    float x;
+    float y;
+    float destx;
+    float desty;
+} draw_t;
 
 //window structure
 typedef struct s_window
@@ -78,6 +87,7 @@ typedef struct s_window
     rotate_t rotate;
     point_t **points;
     og_point_t **og_points;
+    draw_t draw;
 }   window_t;
 
 //map_control.c
@@ -107,13 +117,13 @@ void hex_convert(char *str, window_t *window, int i, int j);
 uint32_t base_colors(window_t *window, int i, int j);
 
 //draw.c
-void display_points(mlx_image_t *img, mlx_t* mlx, window_t *window);
+void calculate_points(mlx_image_t *img, mlx_t* mlx, window_t *window);
 uint32_t get_gradient(uint32_t color_s, uint32_t color_d, int len, int point);
 void rotate(window_t *window);
 
 
 //draw_line.c
-void draw_line_hor(mlx_image_t *img, window_t *window);
+void draw_line(mlx_image_t *img, window_t *window);
 
 //fdf.c
 void ft_error(void);

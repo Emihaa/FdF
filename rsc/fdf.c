@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:45:03 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 19:23:37 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:46:59 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	redraw_image(window_t *window)
 	window->img = mlx_new_image(window->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!window->img)
 		ft_error();
-	display_points(window->img, window->mlx, window);
+	calculate_points(window->img, window->mlx, window);
 }
 
 void	ft_error(void)
@@ -49,7 +49,7 @@ static void	window_parameters(window_t *window)
 	if (!window->img || \
 		(mlx_image_to_window(window->mlx, window->img, 0, 0) < 0))
 		ft_error();
-	display_points(window->img, window->mlx, window);
+	calculate_points(window->img, window->mlx, window);
 }
 
 int32_t	main(int argc, char *argv[])

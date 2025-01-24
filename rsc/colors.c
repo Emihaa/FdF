@@ -6,26 +6,29 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:04:51 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 20:19:28 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:31:24 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-uint32_t get_gradient(uint32_t color_s, uint32_t color_d, int len, int point)
+uint32_t	get_gradient(uint32_t color_s, uint32_t color_d, int len, int point)
 {
-		float ratio;
-		int red;
-		int green;
-		int blue;
+	float	ratio;
+	int		red;
+	int		green;
+	int		blue;
 
-		if (len == 0)
-			return (color_s);
-		ratio = (float)point / (float)len;		
-		red = (int)((1 - ratio) * (get_r_invert(color_s)) + (ratio * (get_r_invert(color_d))));
-		green = (int)((1 - ratio) * (get_g_invert(color_s)) + (ratio * (get_g_invert(color_d))));
-		blue = (int)((1 - ratio) * (get_b_invert(color_s)) + (ratio * (get_b_invert(color_d))));				
-		return (get_rgba((uint8_t)red, (uint8_t)green, (uint8_t)blue, 255));
+	if (len == 0)
+		return (color_s);
+	ratio = (float)point / (float)len;
+	red = (int)((1 - ratio) * (get_r_invert(color_s)) + \
+				(ratio * (get_r_invert(color_d))));
+	green = (int)((1 - ratio) * (get_g_invert(color_s)) + \
+				(ratio * (get_g_invert(color_d))));
+	blue = (int)((1 - ratio) * (get_b_invert(color_s)) + \
+				(ratio * (get_b_invert(color_d))));
+	return (get_rgba((uint8_t)red, (uint8_t)green, (uint8_t)blue, 255));
 }
 
 void	hex_convert(char *str, window_t *window, int i, int j)
@@ -40,7 +43,7 @@ void	hex_convert(char *str, window_t *window, int i, int j)
 	val = 0;
 	len = ft_strlen(str) - 1;
 	while (pos <= len)
-	{	
+	{
 		if (str[pos] >= '0' && str[pos] <= '9')
 			val = str[pos] - '0';
 		else if (str[pos] >= 'a' && str[pos] <= 'f')
