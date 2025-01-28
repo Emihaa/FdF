@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 19:27:36 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/09 19:46:55 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:27:48 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ char	*get_next_line(int fd)
 	return (loop_read(fd, str, &storage, tmp));
 }
 
+static void	loop(char **str, char **storage, char *tmp)
+{
+	*str = ft_substr((const char *)*storage, 0, (size_t)check(*storage));
+	tmp = *storage;
+	*storage = ft_substr((const char *)tmp, check(tmp), \
+						ft_strlen((const char *)tmp) - check(tmp));
+	free(tmp);
+}
+
 static char	*loop_read(int fd, char *str, char **storage, char *tmp)
 {
 	static char	buffer[BUFFER_SIZE];
@@ -62,14 +71,13 @@ static char	*loop_read(int fd, char *str, char **storage, char *tmp)
 		free(tmp);
 		if (bytes_read == 0)
 		{
-			str = ft_substr((const char *)*storage, 0, ft_strlen((const char *)*storage));
+			str = ft_substr((const char *)*storage, 0, \
+							ft_strlen((const char *)*storage));
 			return (free(*storage), *storage = NULL, str);
 		}
 	}
-	str = ft_substr((const char *)*storage, 0, (size_t)check(*storage));
-	tmp = *storage;
-	*storage = ft_substr((const char *)tmp, check(tmp),  ft_strlen((const char *)tmp) - check(tmp));
-	return (free(tmp), str);
+	loop(&str, storage, tmp);
+	return (str);
 }
 
 static int	check(char *str)

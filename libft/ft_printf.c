@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:36:06 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/09 20:13:14 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:48:15 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,3 @@ int	ft_printf(const char *str, ...)
 	va_end(args);
 	return (counter);
 }
-

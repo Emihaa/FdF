@@ -6,21 +6,21 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 20:28:33 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/24 17:43:50 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:52:23 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-void	draw_px(point_t *p0, point_t *p1, window_t *window, mlx_image_t *img)
+void	draw_px(t_point *p0, t_point *p1, t_window *window, mlx_image_t *img)
 {
 	while (window->draw.index <= window->draw.len)
 	{
 		p0->color = get_gradient((int)p1->hex_color, \
 		(int)p0->hex_color, (int)window->draw.len, \
 		(int)window->draw.len - window->draw.index);
-		if (window->draw.x >= 0 && window->draw.x < WINDOW_WIDTH \
-		&& window->draw.y >= 0 && window->draw.y < WINDOW_HEIGHT)
+		if (window->draw.x >= 0 && window->draw.x < WINDOW_W \
+		&& window->draw.y >= 0 && window->draw.y < WINDOW_H)
 			mlx_put_pixel(img, window->draw.x, window->draw.y, p0->color);
 		window->draw.x += window->draw.destx;
 		window->draw.y += window->draw.desty;
@@ -28,7 +28,7 @@ void	draw_px(point_t *p0, point_t *p1, window_t *window, mlx_image_t *img)
 	}
 }
 
-void	dda_line(point_t *p0, point_t *p1, window_t *window, mlx_image_t *img)
+void	dda_line(t_point *p0, t_point *p1, t_window *window, mlx_image_t *img)
 {
 	window->draw.x = 0;
 	window->draw.y = 0;
@@ -50,7 +50,7 @@ void	dda_line(point_t *p0, point_t *p1, window_t *window, mlx_image_t *img)
 	draw_px(p0, p1, window, img);
 }
 
-void	draw_line(mlx_image_t *img, window_t *window)
+void	draw_line(mlx_image_t *img, t_window *window)
 {
 	int	i;
 	int	j;

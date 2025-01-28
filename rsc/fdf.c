@@ -6,28 +6,28 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:45:03 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/24 17:46:59 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:51:25 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-void	redraw_image(window_t *window)
+void	redraw_image(t_window *window)
 {
 	mlx_delete_image(window->mlx, window->img);
-	window->img = mlx_new_image(window->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	window->img = mlx_new_image(window->mlx, WINDOW_W, WINDOW_H);
 	if (!window->img)
-		ft_error();
+		ft_error("MLX_new_image failed");
 	calculate_points(window->img, window->mlx, window);
 }
 
-void	ft_error(void)
-{
-	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
+void	ft_error(char *s)
+{	
+	ft_printf("Error: %s\n", s);
 	exit(EXIT_FAILURE);
 }
 
-static void	free_everything(window_t *window)
+static void	free_everything(t_window *window)
 {
 	int	i;
 
@@ -40,21 +40,21 @@ static void	free_everything(window_t *window)
 	free(window->points);
 }
 
-static void	window_parameters(window_t *window)
+static void	window_parameters(t_window *window)
 {
-	window->mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "FDF", true);
+	window->mlx = mlx_init(WINDOW_W, WINDOW_H, "FDF", true);
 	if (!window->mlx)
-		ft_error();
-	window->img = mlx_new_image(window->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+		ft_error("MLX_init failed");
+	window->img = mlx_new_image(window->mlx, WINDOW_W, WINDOW_H);
 	if (!window->img || \
 		(mlx_image_to_window(window->mlx, window->img, 0, 0) < 0))
-		ft_error();
+		ft_error("MLX_new_image failed");
 	calculate_points(window->img, window->mlx, window);
 }
 
 int32_t	main(int argc, char *argv[])
 {	
-	window_t	window;
+	t_window	window;
 
 	initiliaze_map(argc, argv, &window);
 	window_parameters(&window);

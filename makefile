@@ -1,6 +1,5 @@
 CC = cc 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address -fsanitize=undefined -fsanitize=leak
-#remember I am not allowed to use -fsanitize=address when submitting program
+CFLAGS = -Wall -Werror -Wextra ##-g -fsanitize=address -fsanitize=undefined -fsanitize=leak
 LIBMLX = ./MLX42
 LIBFT = ./libft
 NAME = fdf

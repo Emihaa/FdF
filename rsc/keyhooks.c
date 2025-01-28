@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:55:53 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 16:13:00 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:51:01 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ void	keyhook_rotate(void *param)
 {
 	float		x;
 	float		y;
-	window_t	*window;
+	t_window	*window;
 
-	window = (window_t *)param;
+	window = (t_window *)param;
 	x = 0;
 	y = 0;
 	if (mlx_is_key_down(window->mlx, MLX_KEY_1))
 		x += 0.05;
 	if (mlx_is_key_down(window->mlx, MLX_KEY_2))
 		y += 0.05;
-	window->rotate.rotate_x += x;
-	window->rotate.rotate_y += y;
+	window->rot.rot_x += x;
+	window->rot.rot_y += y;
 	if (y != 0 || x != 0)
 		redraw_image(window);
 }
@@ -35,9 +35,9 @@ void	keyhook_translate_img(void *param)
 {
 	int			dx;
 	int			dy;
-	window_t	*window;
+	t_window	*window;
 
-	window = (window_t *)param;
+	window = (t_window *)param;
 	dx = 0;
 	dy = 0;
 	if (mlx_is_key_down(window->mlx, MLX_KEY_W))
@@ -58,9 +58,9 @@ void	keyhook_scale(void *param)
 {
 	float		xy;
 	int			x;
-	window_t	*window;
+	t_window	*window;
 
-	window = (window_t *)param;
+	window = (t_window *)param;
 	xy = 0;
 	x = 0;
 	if (mlx_is_key_down(window->mlx, MLX_KEY_Q))
@@ -82,9 +82,9 @@ void	keyhook_scale(void *param)
 void	key_down(void *param)
 {
 	float		z;
-	window_t	*window;
+	t_window	*window;
 
-	window = (window_t *)param;
+	window = (t_window *)param;
 	z = 0;
 	if (mlx_is_key_down(window->mlx, MLX_KEY_C))
 		z -= 0.2;
@@ -100,9 +100,9 @@ void	key_down(void *param)
 
 void	keyhook_events(mlx_key_data_t keydata, void *param)
 {
-	window_t	*window;
+	t_window	*window;
 
-	window = (window_t *)param;
+	window = (t_window *)param;
 	if (keydata.action == MLX_PRESS)
 	{
 		if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)

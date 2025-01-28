@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:04:51 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/24 15:31:24 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:52:50 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ uint32_t	get_gradient(uint32_t color_s, uint32_t color_d, int len, int point)
 	return (get_rgba((uint8_t)red, (uint8_t)green, (uint8_t)blue, 255));
 }
 
-void	hex_convert(char *str, window_t *window, int i, int j)
+void	hex_convert(char *str, t_window *window, int i, int j)
 {
 	int				pos;
 	unsigned int	dec;
@@ -51,7 +51,7 @@ void	hex_convert(char *str, window_t *window, int i, int j)
 		else if (str[pos] >= 'A' && str[pos] <= 'F')
 			val = str[pos] - 'A' + 10;
 		else
-			ft_error();
+			ft_error("Wrong Hex value");
 		dec = dec * 16 + val;
 		pos++;
 	}
@@ -59,7 +59,7 @@ void	hex_convert(char *str, window_t *window, int i, int j)
 		get_rgba(get_r(dec), get_g(dec), get_b(dec), 255);
 }
 
-uint32_t	base_colors(window_t *window, int i, int j)
+uint32_t	base_colors(t_window *window, int i, int j)
 {
 	uint32_t	color;
 	int			max_top;

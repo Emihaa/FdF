@@ -6,11 +6,9 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 14:22:00 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/09 21:08:50 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:54:54 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef LIBFT_H
 # define LIBFT_H

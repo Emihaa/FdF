@@ -6,13 +6,13 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:15:45 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 20:15:18 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:49:53 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-void	input_z_data(window_t *window, int *j, int *i, char **rows)
+void	input_z_data(t_window *window, int *j, int *i, char **rows)
 {
 	char	*temp;
 
@@ -41,7 +41,7 @@ void	input_z_data(window_t *window, int *j, int *i, char **rows)
 	free(rows[*j]);
 }
 
-void	map_z_info(int fd, char *map_data, window_t *window)
+void	map_z_info(int fd, char *map_data, t_window *window)
 {
 	char	*line;
 	char	**rows;
@@ -68,17 +68,17 @@ void	map_z_info(int fd, char *map_data, window_t *window)
 	ft_printf("map:\n%s\n", map_data);
 }
 
-void	allocate_points(window_t *window)
+void	allocate_points(t_window *window)
 {
 	int	i;
 
 	i = 0;
-	window->points = malloc(window->row_h * sizeof(point_t *));
+	window->points = malloc(window->row_h * sizeof(t_point *));
 	if (!window->points)
-		ft_error();
+		ft_error("Malloc fail");
 	while (i < (int) window->row_h)
 	{
-		window->points[i] = malloc(window->row_w * sizeof(point_t));
+		window->points[i] = malloc(window->row_w * sizeof(t_point));
 		if (!window->points[i])
 		{
 			while (i >= 0)
@@ -87,13 +87,13 @@ void	allocate_points(window_t *window)
 				i--;
 			}
 			free(window->points);
-			ft_error();
+			ft_error("Malloc fail");
 		}
 		i++;
 	}
 }
 
-void	store_map(window_t *window, char **line, int *fd, char **map_data)
+void	store_map(t_window *window, char **line, int *fd, char **map_data)
 {
 	char	*temp;
 
@@ -109,12 +109,12 @@ void	store_map(window_t *window, char **line, int *fd, char **map_data)
 	if (!*map_data)
 	{
 		free(temp);
-		ft_error();
+		ft_error("Malloc fail");
 	}
 	free(temp);
 }
 
-void	map_w_h_info(int fd, window_t *window, char **map_data)
+void	map_w_h_info(int fd, t_window *window, char **map_data)
 {
 	char	*line;
 	char	**rows;

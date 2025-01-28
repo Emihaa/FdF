@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:47:55 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 19:27:01 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:50:12 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static void	close_map(char **path, int *fd)
 	if (*fd == -1)
 	{
 		free(*path);
-		ft_error();
+		ft_error("Open failed");
 	}
 }
 
-void	parse_map(char *line, window_t *window)
+void	parse_map(char *line, t_window *window)
 {
 	char	**rows;
 	int		i;
@@ -31,39 +31,39 @@ void	parse_map(char *line, window_t *window)
 	i = 0;
 	rows = ft_split(line, ' ');
 	if (!rows)
-		ft_error();
+		ft_error("Malloc failed");
 	while (rows[i])
 	{
 		free(rows[i]);
 		i++;
 	}
 	if (i != (int)window->row_check)
-		ft_error();
+		ft_error("Wrong map");
 	free(rows);
 }
 
 void	null_check(char **source)
 {
 	if (!*source)
-		ft_error();
+		ft_error("Malloc fail");
 }
 
 static void	open_map(int argc, char *argv[], char **path, int *fd)
 {
 	if (argc < 2 || !argv[1] || argc > 2)
-		ft_error();
+		ft_error("Incorrect arg count");
 	*path = ft_strjoin("./maps/", argv[1]);
 	if (!*path)
-		ft_error();
+		ft_error("No map found");
 	*fd = open(*path, O_RDONLY);
 	if (*fd == -1)
 	{
 		free(*path);
-		ft_error();
+		ft_error("Map open failed");
 	}
 }
 
-void	initiliaze_map(int argc, char *argv[], window_t *window)
+void	initiliaze_map(int argc, char *argv[], t_window *window)
 {
 	int		fd;
 	char	*path;

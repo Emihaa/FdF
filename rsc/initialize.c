@@ -6,13 +6,13 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:43:59 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/22 20:31:30 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:51:12 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-void	initiliaze(window_t *window)
+void	initiliaze(t_window *window)
 {
 	window->row_h = 0;
 	window->row_w = 0;
@@ -23,7 +23,6 @@ void	initiliaze(window_t *window)
 	window->min_z = -1;
 	window->scale.scale_z = 1;
 	window->scale.scale_xy = 0;
-	window->rotate.rotate_x = 0.5;
-	window->rotate.rotate_y = 0.5;
-    
+	window->rot.rot_x = 0.5;
+	window->rot.rot_y = 0.5;
 }
